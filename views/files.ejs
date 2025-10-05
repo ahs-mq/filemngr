@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Manager</title>
+</head>
+<body>
+    <h1>Upload New File</h1>
+    <form action="/upload" enctype="multipart/form-data" method="post">
+        <input type="file" name="file" required />
+        <button type="submit">Upload</button>
+    </form>
+
+    <hr>
+
+    <h1>Your Files</h1>
+    <div>
+        <% if (files && files.length > 0) { %>
+            <% files.forEach(file => { %>
+                <div>
+                    <p>
+                        <strong><%= file.name %></strong> — <%= file.mimeType %> — <%= file.size %> bytes
+                    </p>
+                    
+                    <a href="/download/<%= file.id %>">Download</a>
+                    
+                    <form action="/delete/<%= file.id %>" method="post">
+                        <button type="submit" onclick="return confirm('Are you sure you want to delete <%= file.name %>?')">Delete</button>
+                    </form>
+
+                    <form action="/rename/<%= file.id %>" method="post">
+                        <input type="text" name="newName" placeholder="New Filename" required>
+                        <button type="submit">Rename</button>
+                    </form>
+                </div>
+            <% }) %>
+        <% } else { %>
+            <p>You haven't uploaded any files yet.</p>
+        <% } %>
+    </div>
+</body>
+</html>
